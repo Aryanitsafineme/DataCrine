@@ -1,0 +1,8 @@
+pandas
+numpy
+scikit-learn
+xgboost
+transformers
+huggingface_hub
+ucimlrepo
+kagglehub

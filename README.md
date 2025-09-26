@@ -34,3 +34,49 @@ Clone the repository:
 ```bash
 git clone https://github.com/Aryanitsafineme/datacrine.git
 cd datacrine
+
+pip install -r requirements.txt
+from datacrine import Datacrine
+import pandas as pd
+
+# Initialize
+dc = Datacrine()
+
+# --- UCI Example ---
+from ucimlrepo import fetch_ucirepo
+uci_data = fetch_ucirepo(id=350)
+uci_credit = pd.concat([uci_data.data.features, uci_data.data.targets], axis=1)
+
+uci_cleaned = dc.impute_numeric_mean(uci_credit.copy(), ["X5"])
+uci_cleaned = dc.cap_outliers_iqr(uci_cleaned, ["X1"])
+uci_cleaned = dc.uci_semantic_rules(uci_cleaned)
+uci_cleaned["Y"] = uci_credit["Y"].values
+
+uci_results = dc.train_and_evaluate(uci_cleaned, target_col="Y", dataset="uci")
+print("UCI Results:", uci_results)
+
+# --- IMDb Example ---
+import kagglehub
+path = kagglehub.dataset_download("lakshmi25npathi/imdb-dataset-of-50k-movie-reviews")
+imdb = pd.read_csv(f"{path}/IMDB Dataset.csv")
+
+imdb_subset = imdb.sample(2000, random_state=42).copy()
+imdb_cleaned = dc.imdb_label_check(imdb_subset)
+imdb_cleaned["Y"] = imdb_subset["sentiment"].map({"positive": 1, "negative": 0})
+
+imdb_results = dc.train_and_evaluate(
+    imdb_cleaned.rename(columns={"llm_sentiment":"Y"}), 
+    target_col="Y", 
+    dataset="imdb"
+)
+print("IMDb Results:", imdb_results)
+
+# --- Export ---
+dc.export_logs("datacrine_audit.txt")
+dc.save_dataset(uci_cleaned, "uci_credit_cleaned.csv")
+
+👤 Author
+
+Aryan Singh
+B.Sc. Data Science & AI @ GISMA Business School Potsdam
+Thesis: "Datacrine: A Modular, Interpretable AI Framework for Smart Data Cleaning"

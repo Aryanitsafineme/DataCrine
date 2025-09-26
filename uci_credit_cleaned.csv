@@ -1,0 +1,6 @@
+X1,X5,Y,llm_flag,llm_rationale
+20000,29,1,0,Valid
+120000,35,0,0,Valid
+90000,42,0,0,Valid
+50000,51,0,0,Valid
+300000,60,1,1,Unrealistic credit limit

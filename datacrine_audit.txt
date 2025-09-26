@@ -1,0 +1,6 @@
+Imputed missing values in AGE with mean=35.5
+Capped outliers in LIMIT_BAL to [10,000, 500,000]
+Applied semantic rules to UCI Credit dataset.
+Checked IMDb dataset with LLM sentiment model.
+Trained & evaluated models on UCI dataset.
+Trained & evaluated models on IMDb dataset.
